@@ -1,6 +1,6 @@
 
-./Conversion Service/uploads/*
-.docx
+*.docx
+*.DS_Store
 # Logs
 
 logs
