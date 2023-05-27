@@ -1,4 +1,7 @@
+
+./Conversion Service/uploads
 # Logs
+
 logs
 *.log
 npm-debug.log*
