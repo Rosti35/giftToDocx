@@ -1,5 +1,6 @@
 
-./Conversion Service/uploads
+./Conversion Service/uploads/*
+.docx
 # Logs
 
 logs
