@@ -2,7 +2,6 @@ const fs = require('fs');
 const express = require('express');
 const multer  = require('multer');
 const officegen = require('officegen');
-const path = require('path');
 const storage = multer.diskStorage({
   destination: './uploads/',
   filename: (req, file, cb) => {
@@ -72,7 +71,7 @@ app.post('/upload', upload.single('giftFile'), (req, res) => {
       });
 
       // Respond with the location of the docx file
-      res.send({ fileLocation: `/uploads/${req.file.filename}.docx` });
+      res.send({ fileLocation: `${req.file.path}.docx` });
     });
   });
 });
