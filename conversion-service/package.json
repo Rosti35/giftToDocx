@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+
     "test": "mocha --timeout 5000 --recursive",
+
     "start": "nodemon server.js"
   },
   "repository": {
@@ -18,6 +20,7 @@
   },
   "homepage": "https://github.com/Rosti35/giftToDocx#readme",
   "dependencies": {
+
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
     "gift-pegjs": "^0.2.1",
@@ -26,6 +29,7 @@
     "officegen": "^0.6.5"
   },
   "devDependencies": {
+
     "chai": "^4.3.7",
     "chai-http": "^4.4.0",
     "mocha": "^10.2.0",
