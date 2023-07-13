@@ -4,6 +4,7 @@ const downloadRouter = require('./download');
 const filesRouter = require('./files');
 
 const app = express();
+app.use(express.json());
 
 // Route for file download
 app.use('/download', downloadRouter);
@@ -15,6 +16,6 @@ app.use('/upload', convertatorRouter);
 
 app.listen(3000, () => console.log('Listening on port 3000'));
 
-
+module.exports = app; // for testing
 
 
