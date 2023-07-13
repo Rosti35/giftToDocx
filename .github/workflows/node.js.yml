@@ -21,16 +21,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Change to project directory
+      run: cd conversion-service
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        cache: npm
+
     - name: Install dependencies
-      run: cd conversion-service && npm ci
-      
-    - name: Build
-      run: cd conversion-service && npm run build
+      run: npm ci
 
     - name: Run tests
-      run: cd conversion-service && npm test
+      run: npm test
+
+    - name: Build
+      run: npm run build
+
