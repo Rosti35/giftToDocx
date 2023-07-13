@@ -21,15 +21,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Cache node modules
-      uses: actions/cache@v2
       with:
-        path: conversion-service/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('conversion-service/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-
+        path: conversion-service
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
