@@ -26,6 +26,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - name: Install dependencies
+      run: cd conversion-service && npm ci
+      
+    - name: Build
+      run: cd conversion-service && npm run build
+
+    - name: Run tests
+      run: cd conversion-service && npm test
