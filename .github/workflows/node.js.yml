@@ -22,8 +22,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Change to project directory
-      run: cd conversion-service
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: conversion-service/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('conversion-service/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
