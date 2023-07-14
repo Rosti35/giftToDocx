@@ -36,14 +36,18 @@ function convertFile(file) {
         }
         pObj.addLineBreak();
       }
-
-      const outputPath = path.join(__dirname, 'public', `${file.filename}.docx`);
+      const dirPath = path.join(__dirname, 'public');
+      const outputPath = path.join(dirPath, `${file.filename}.docx`);
+      
+      // Create the directory if it does not exist
+      fs.mkdirSync(dirPath, { recursive: true });
+      
       const out = fs.createWriteStream(outputPath);
       out.on('error', function (err) {
         console.log('Error writing docx file:', err); // Log error
         reject('Error writing docx file');
       });
-
+      
       docx.generate(out);
 
       out.on('finish', function () {
