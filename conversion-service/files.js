@@ -1,8 +1,18 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
+
+// Create a rate limiter middleware
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 15// limit each IP to 100 requests per windowMs
+});
+
+//  Apply the rate limiter middleware to the routes
+router.use(limiter);
 
 // Delete a file or a list of files based on their paths
 router.delete('/', (req, res) => {
