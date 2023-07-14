@@ -28,7 +28,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: npm
-        path: conversion-service
+        cache-dependency-path: './conversion-service/package-lock.json'
 
 
     - name: Install dependencies
