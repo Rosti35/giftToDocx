@@ -15,7 +15,7 @@ app.use('/files', filesRouter);
 
 app.use('/upload', convertatorRouter);
 
-app.listen(3000, () => console.log('Listening on port 3000'));
+const server = app.listen(3000, () => console.log('Server listening on port 3000'));
 
-module.exports = app; // for testing
+module.exports = server;
 

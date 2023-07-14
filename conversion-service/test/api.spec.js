@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const app = require('../server'); // Assuming the code is in app.js
+const server = require('../server'); // Assuming the code is in app.js
 const expect = chai.expect;
 const fs = require('fs');
 const path = require('path');
@@ -15,7 +15,7 @@ describe('API Endpoint Tests', () => {
   describe('POST /upload', () => {
     it('should upload and convert GIFT files', (done) => {
       chai
-        .request(app)
+        .request(server)
         .post('/upload')
         .attach('giftFiles', fs.readFileSync(path.join(__dirname, './testFiles/file1.gift')), 'file1.gift')
         .attach('giftFiles', fs.readFileSync(path.join(__dirname, './testFiles/file3.gift')), 'file3.gift')
@@ -37,7 +37,7 @@ describe('API Endpoint Tests', () => {
       const filename = convertedFiles[0]; // Assuming the first file in the response is downloaded
 
       chai
-        .request(app)
+        .request(server)
         .get('/download')
         .query({ path: filename })
         .end((err, res) => {
@@ -54,7 +54,7 @@ describe('API Endpoint Tests', () => {
       const filenames = convertedFiles; // Assuming all converted files are deleted
 
       chai
-        .request(app)
+        .request(server)
         .delete('/files')
         .send({ paths: filenames })
         .end((err, res) => {
