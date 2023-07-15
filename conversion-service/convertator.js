@@ -1,19 +1,27 @@
 const express = require('express');
-const fs = require('fs');
 const convertFile = require('./convertF');
 const path = require('path');
 const multer = require('multer');
-const officegen = require('officegen');
-
+const crypto = require('crypto');
 
 const router = express.Router();
+
 
 // Multer storage configuration
 const storage = multer.diskStorage({
   destination: './uploads/',
   filename: (req, file, cb) => {
-    console.log('File uploading:', file.fieldname); // Log the uploading file
-    cb(null, `${file.fieldname}-${Date.now()}`);
+    console.log('File uploading:', file.originalname); // Log the uploading file
+
+    // create a hash instance
+    let hash = crypto.createHash('sha256');
+
+    // hashing the filename with current date as a salt
+    const fileName = file.originalname + '-' + Date.now();
+    hash.update(fileName);
+
+    // Replace filename with hashed filename
+    cb(null, hash.digest('hex').substring(0, 16));
   }
 });
 
