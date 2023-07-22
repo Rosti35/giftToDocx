@@ -1,19 +1,34 @@
 
 'use client'
 import axios from 'axios'
-import { useState } from 'react';
+import "../../styles/globals.css";
+import "../../styles/page.css";
+import { useState, useRef } from 'react';
 import { saveAs } from 'file-saver';
 import dotenv from 'dotenv';
+import Image from 'next/image';
 dotenv.config();
 const BASEURL = process.env.BASEURL;
 
 function File({renderState, NameGift, fileName, fileURL, handleDownload, handleDelete}){
 
   return(
-  <div>
+  <div className='FileComponent'>
+    {renderState==1 && 
+    <Image src= "/assets/G.svg" width={40} height={40}></Image>
+  }
+    {renderState==2 && 
+    <Image src= "/assets/D.svg" width={40} height={30}></Image>
+  }
     <p>{fileName}</p>
-    {renderState==1 && <button onClick={() => handleDelete(NameGift)}>delete</button>}
-    {renderState==2 &&<button onClick={() => handleDownload(fileURL, fileName)}>download</button>}
+    {renderState==1 && 
+        <button className="delete" onClick={() => handleDelete(NameGift)}><Image src= "/assets/trash.svg" width={30} height={30} alt='trash'></Image></button>
+      }
+    {renderState==2 &&
+    <div>
+    <button className="download" onClick={() => handleDownload(fileURL, fileName)}>Скачать</button>
+    </div>
+    }
   </div>
   )
 }
@@ -35,12 +50,14 @@ export default function Home() {
     for (let i=0; i<arrayFromSelectedFiles.length; i++){
       //console.log(selectedFiles[i])
       //console.log(selectedFiles[i].name)
-      if (selectedFiles[i].name==NameGift){
-        console.log("нашел совпадение" + selectedFiles[i].name);
-        setSelectedFiles((prevFiles) => prevFiles.filter((file, index) => index !== i));
-        console.log(selectedFiles);
-        return
-      }
+
+        if (selectedFiles[i].name==NameGift){
+          console.log("нашел совпадение" + selectedFiles[i].name);
+          setSelectedFiles((prevFiles) => prevFiles.filter((file, index) => index !== i));
+          console.log(selectedFiles);
+        }
+        if (selectedFiles.length==1){setRenderState(0)}
+      
     }
 
     
@@ -55,7 +72,7 @@ export default function Home() {
     e.preventDefault();
     const droppedFiles = e.dataTransfer.files;
 
-    if (files.length > 5) {
+    if (droppedFiles.length > 5) {
       // Limit the number of files to 3
       alert('Please select up to 3 files.');
       return;
@@ -130,11 +147,15 @@ export default function Home() {
   };
 
 
+const fileInputRef = useRef(null);
 
+const handleButtonClick =() => {
+  fileInputRef.current.click();
+}
 
 
   return (
-    <div>
+    <div className='main'>
       <div className='leftDiv'>
         <h1>Конвертируйте GIFT в Word за пару кликов</h1>
         <p>Взникли проблемы?</p>
@@ -142,15 +163,23 @@ export default function Home() {
       </div>
       
       <div className='rightDiv'>
+        <Image src='/assets/logo_main_sm.svg'
+        alt='политех лого'
+        width={300} 
+        height={300}
+        />
     
     { renderState==0 &&
-      <div>
+      <div className='renderState'>
+        <h1>Загрузите файлы</h1>
+        <p>Файлы должны быть в формате GIFT</p>
          <div className='dropArea' onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()} onDragEnter={(e) => e.preventDefault()}>
           <p>Перетащите файлы сюда</p>
         </div>
-        <input type="file" onChange={handleFileChange} multiple accept=".gift" 
+        <button className='selectFilesButton' onClick={handleButtonClick}>Выберите файлы на компьютере</button>
+        <input type="file" className='chooseFile' onChange={handleFileChange} ref={fileInputRef} multiple accept=".gift" 
         style={{
-          color: 'transparent'}}/>
+          display:'none'}}/>
       </div>
 
     }
@@ -160,90 +189,32 @@ export default function Home() {
 
         {
           renderState!==0 &&
-          <div>
-            <p>Selected Files:</p>
+          <div className='renderState'>
+            <div>
+            <h1>Успешно!</h1>
+            <p>Можно загрузить файлы</p>
+            </div>
+            <div className='fileList'>
               {selectedFiles.map((file, index) => (
                 <div>
-                  <ul>
+                  <ul className='list'>
                   <li key={index}><File renderState={renderState} NameGift={file.name} fileURL={downloadLinks[index]} fileName={file.name.substring(0,file.name.indexOf("."))} handleDownload={handleDownload} handleDelete={handleDelete}/></li>
                   </ul>
                 </div>
               ))}
-
+        </div>
           </div>
         }
 
 
           {renderState==1 &&
-              <button onClick={handleUpload}>Конвертировать</button>
+              <button className="convertButton" onClick={handleUpload}>Конвертировать</button>
           }
           {renderState==2 &&
-              <button onClick={()=>setRenderState(0)}>Конвертировать еще</button>
+              <button className="convertAnotherButton" onClick={()=>setRenderState(0)}>Конвертировать еще</button>
           }
       </div>
      
     </div>
   );
 }
-
-
-
-/*
-return (
-    <div>
-      <div className='leftDiv'>
-        <h1>Конвертируйте GIFT в Word за пару кликов</h1>
-        <p>Взникли проблемы?</p>
-        <p>Напишите на shirokova@gmail.com</p>
-      </div>
-      
-      <div className='rightDiv'>
-    
-    { renderState==0 &&
-      <div>
-         <div className='dropArea' onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()} onDragEnter={(e) => e.preventDefault()}>
-          <p>Перетащите файлы сюда</p>
-        </div>
-        <input type="file" onChange={handleFileChange} multiple accept=".gift" 
-        style={{
-          color: 'transparent'}}/>
-      </div>
-
-    }
-       
-
-        {
-          renderState==1 &&
-          <div>
-            <p>Selected Files:</p>
-              {Array.from(selectedFiles).map((file, index) => (
-                <div>
-                  <li key={index}>{file.name}</li>
-                </div>
-              ))}
-            <button onClick={handleUpload}>Конвертировать</button>
-          </div>
-        }
-        
-
-
-        { renderState==2  &&
-          <div>
-          {Array.from(downloadLinks).map((file, index) => (
-                <div>
-                  <li key={index}>{file}</li>
-                  <button onClick={()=>handleDownload(file)}>download</button>
-                </div>
-              ))}
-              <button onClick={()=>setRenderState(0)}>Конвертировать еще</button>
-          
-          </div>
-        }
-          
-      </div>
-     
-    </div>
-  );
-}
-
-*/
