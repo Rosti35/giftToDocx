@@ -191,8 +191,16 @@ const handleButtonClick =() => {
           renderState!==0 &&
           <div className='renderState'>
             <div>
-            <h1>Успешно!</h1>
-            <p>Можно загрузить файлы</p>
+              {renderState == 1 && <div>
+                <h1>Загрузите файлы</h1>
+                <p>Файлы должны быть в формате GIFT</p>
+              </div>}
+
+              {renderState == 2 && <div>
+                <h1>Успешно!</h1>
+                <p>Можно загрузить файлы</p>
+                </div>
+              }
             </div>
             <div className='fileList'>
               {selectedFiles.map((file, index) => (
