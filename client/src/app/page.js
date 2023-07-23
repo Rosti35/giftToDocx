@@ -2,7 +2,6 @@
 'use client'
 import axios from 'axios'
 import "../../styles/globals.css";
-import "../../styles/page.css";
 import { useState, useRef } from 'react';
 import { saveAs } from 'file-saver';
 import dotenv from 'dotenv';
@@ -14,15 +13,17 @@ function File({renderState, NameGift, fileName, fileURL, handleDownload, handleD
 
   return(
   <div className='FileComponent'>
+    <div className='fileName'>
     {renderState==1 && 
     <Image src= "/assets/G.svg" width={40} height={40}></Image>
   }
     {renderState==2 && 
-    <Image src= "/assets/D.svg" width={40} height={30}></Image>
+    <Image src= "/assets/D.svg" width={40} height={40}></Image>
   }
     <p>{fileName}</p>
+    </div>
     {renderState==1 && 
-        <button className="delete" onClick={() => handleDelete(NameGift)}><Image src= "/assets/trash.svg" width={30} height={30} alt='trash'></Image></button>
+        <button className="delete" onClick={() => handleDelete(NameGift)}><Image src= "/assets/trash.svg" width={20} height={25} alt='trash'></Image></button>
       }
     {renderState==2 &&
     <div>
@@ -59,8 +60,11 @@ export default function Home() {
         if (selectedFiles.length==1){setRenderState(0)}
       
     }
+  }
 
-    
+  const handleClear =() => {
+    setSelectedFiles[[]];
+    setRenderState(0);
   }
 
 
@@ -156,27 +160,27 @@ const handleButtonClick =() => {
 
   return (
     <div className='main'>
-      <div className='leftDiv'>
-        <h1>Конвертируйте GIFT в Word за пару кликов</h1>
-        <p>Взникли проблемы?</p>
-        <p>Напишите на shirokova@gmail.com</p>
-      </div>
+ 
       
       <div className='rightDiv'>
         <Image src='/assets/logo_main_sm.svg'
         alt='политех лого'
         width={300} 
-        height={300}
+        height={55}
         />
     
     { renderState==0 &&
       <div className='renderState'>
+        <div className='caption'>
         <h1>Загрузите файлы</h1>
         <p>Файлы должны быть в формате GIFT</p>
-         <div className='dropArea' onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()} onDragEnter={(e) => e.preventDefault()}>
-          <p>Перетащите файлы сюда</p>
         </div>
-        <button className='selectFilesButton' onClick={handleButtonClick}>Выберите файлы на компьютере</button>
+
+         <div className='dropArea' onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()} onDragEnter={(e) => e.preventDefault()}>
+         <Image src= "/assets/cloud.svg" width={25} height={30} alt='cloud'></Image>
+          <p>Перетащите файлы в эту область</p>
+        </div>
+        <button className='selectFilesButton' onClick={handleButtonClick}>Выбрать файлы на компьютере</button>
         <input type="file" className='chooseFile' onChange={handleFileChange} ref={fileInputRef} multiple accept=".gift" 
         style={{
           display:'none'}}/>
@@ -191,12 +195,14 @@ const handleButtonClick =() => {
           renderState!==0 &&
           <div className='renderState'>
             <div>
-              {renderState == 1 && <div>
-                <h1>Загрузите файлы</h1>
-                <p>Файлы должны быть в формате GIFT</p>
+              {renderState == 1 && 
+              <div className='caption'>
+                <h1>Файлы загружены</h1>
+                <p>Можно Конвертировать</p>
               </div>}
 
-              {renderState == 2 && <div>
+              {renderState == 2 && 
+              <div className='caption'>
                 <h1>Успешно!</h1>
                 <p>Можно загрузить файлы</p>
                 </div>
@@ -216,7 +222,10 @@ const handleButtonClick =() => {
 
 
           {renderState==1 &&
+            <div className='clearAndConvert'>
               <button className="convertButton" onClick={handleUpload}>Конвертировать</button>
+              <button className="clear" onClick={handleClear}>Очистить</button>
+            </div>
           }
           {renderState==2 &&
               <button className="convertAnotherButton" onClick={()=>setRenderState(0)}>Конвертировать еще</button>
@@ -226,3 +235,14 @@ const handleButtonClick =() => {
     </div>
   );
 }
+
+/*
+
+   
+<div className='leftDiv'>
+<h1>Конвертируйте GIFT в Word за пару кликов</h1>
+<p>Взникли проблемы?</p>
+<p>Напишите на shirokova@gmail.com</p>
+</div>
+
+*/
