@@ -1,0 +1,214 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+}
+
+p {
+  font-size: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.main {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  padding-top: 40px;
+  margin: 0;
+  height: 100%
+}
+
+.leftDiv {
+  height: 800px;
+  flex-basis: 48%;
+  padding: 30px;
+  border-radius: 30px;
+  background-color: #4285f4; /* Blue color */
+  color: white;
+}
+
+.rightDiv {
+  border-radius: 30px;
+  padding: 30px;
+  flex-basis: 48%;
+  width: 600px;
+  height: 800px;
+  display: flex;
+  background-color: #ffffff;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropArea {
+  background-color: #F5F5FA; /* Grayish blue */
+  border-radius: 15px;
+  height: 200px;
+  width: 400px;
+  display: flex;
+  color: #8083A3; /* Dark gray */
+  margin-bottom: 0px;
+  padding-left: 20px;
+  align-items: center;
+  justify-content: center;
+  border: dashed #E4E6E8;
+}
+
+.dropArea p {
+  margin-left: 12px;
+  font-size: 14px;
+}
+
+.delete {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.FileComponent {
+  width: 400px;
+  height: 60px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 10px;
+  border-radius: 8px;
+  border: 1px solid #E4E6E8; /* Light gray border */
+  color: #000000; /* Light gray text color */
+  margin-bottom: 10px;
+}
+
+
+.list {
+  list-style: none;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fileName {
+  display: flex;
+  align-items: center;
+}
+
+.fileName p {
+  margin-left: 15px;
+  font-weight: 600;
+}
+
+.download{
+  width: 100px;
+  height: 38px;
+  background-color:#3E7EFF;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0px;
+  border-radius: 5px;
+}
+
+.convertAnotherButton,
+.selectFilesButton {
+  width: 400px;
+  height: 50px;
+  font-weight: 800;
+  background-color: #3E7EFF;
+  ; /* Darker blue */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 30px; /* Added margin for center alignment */
+  font-size: 14px;
+}
+
+.clearAndConvert {
+  display: flex;
+  margin-top: 30px; /* Added margin for center alignment */
+}
+
+.convertButton{
+  width: 290px;
+  height: 50px;
+  font-weight: 800;
+  background-color: #3E7EFF;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.clear {
+  width: 90px;
+  height: 50px;
+  font-weight: 800;
+  background-color: #ffd4d1;
+  ; /* Darker blue */
+  color: #E27C7C;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-left: 20px;
+}
+
+
+
+.renderState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fileList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.caption {
+  margin-top: 30px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.caption p {
+  color: #8083A3;
+  margin: 10px;
+}
+.caption h1 {
+  margin: 0;
+  font-size: 32px;
+}
