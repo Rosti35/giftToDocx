@@ -2,6 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
+const expressionParser = require("docxtemplater/expressions.js");
+
+
 
 function convertFile(file) {
   return new Promise((resolve, reject) => {
@@ -16,31 +19,52 @@ function convertFile(file) {
         .replace(/{/g, "")
         .replace(/}/g, "")
         .replace(/~/g, "")
-        .replace(/=/g, "")
+        // .replace(/=/g, "")
         .split("\n");
 
       let questionNumber = 1;
+      let answersNum = 1;
       let question = "";
       let answers = [];
       let table = [];
+      let title = "";
+      let ConvertError = [];
 
       giftContent.forEach((line, index) => {
         try {
-          line = line.trim();
+          line = line.trim().replace("<span>", "").replace("</span>", "");
+          console.log(line)
           if (line.startsWith("::")) {
-            question = line.split("::")[2].split("[html]<p>")[1].split("</p>")[0];
-          } else if (line.startsWith("<p>")) {
-            answers.push(line.replace("<p>", "").replace("</p>", ""));
+            question = line.split("::")[2].split("[html]<p>")[1].split("</p>")[0].replace(/\\/g, "");
+
+          } else if (line.startsWith("$CATEGORY:")) {
+            title = line.replace("$CATEGORY: ", "").replace("$course$", "").replace("/top/", "");
+
+          } else if (line.startsWith("<p>") || line.startsWith("=")) {
+            let answerText = line.replace("<p>", "").replace("</p>", "");
+            let isBoldItalic = answerText.startsWith("=");
+
+            answers.push({
+              'an': isBoldItalic ? answerText.substring(1) : answerText,
+              'num': answersNum,
+              'boldItalic': isBoldItalic,
+            });
+            answersNum++;
+        
           } else if (line === "") {
             if (answers.length > 0) {
-              table.push({ '№': questionNumber, 'Question': question, 'Answers': answers.join(", ") });
+              console.log(question)
+              console.log(answers)
+              table.push({ 'questionNumber': questionNumber, 'Question': question, 'Answers': answers });
               questionNumber++;
+              answersNum = 1;
               question = "";
               answers = [];
             }
           }
         } catch (error) {
           console.error(`Error processing line ${index + 1}: ${line}`, error);
+          ConvertError.push({qNum: questionNumber, Type: "Format error :("})
         }
       });
 
@@ -56,14 +80,17 @@ function convertFile(file) {
 
       const zip = new PizZip(content);
 
-      const doc = new Docxtemplater();
-      doc.loadZip(zip);
+      const doc = new Docxtemplater(zip, { parser: expressionParser});
 
+   
+
+      console.log(ConvertError)
       // set the templateVariables
-      doc.setData({ table: table });
+      doc.setData({ title: title, table: table, warning: ConvertError});
+
 
       try {
-        // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+        // render the document
         doc.render();
       } catch (error) {
         console.error('Error generating docx:', error); // Log error
@@ -92,3 +119,4 @@ function convertFile(file) {
 }
 
 module.exports = convertFile;
+
