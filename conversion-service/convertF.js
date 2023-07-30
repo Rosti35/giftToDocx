@@ -53,8 +53,8 @@ function convertFile(file) {
         
           } else if (line === "") {
             if (answers.length > 0) {
-              console.log(question)
-              console.log(answers)
+              // console.log(question)
+              // console.log(answers)
               table.push({ 'questionNumber': questionNumber, 'Question': question, 'Answers': answers });
               questionNumber++;
               answersNum = 1;
@@ -82,9 +82,7 @@ function convertFile(file) {
 
       const doc = new Docxtemplater(zip, { parser: expressionParser});
 
-   
-
-      console.log(ConvertError)
+      // console.log(ConvertError)
       // set the templateVariables
       doc.setData({ title: title, table: table, warning: ConvertError});
 
