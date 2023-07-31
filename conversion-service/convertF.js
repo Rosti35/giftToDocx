@@ -33,7 +33,7 @@ function convertFile(file) {
       giftContent.forEach((line, index) => {
         try {
           line = line.trim().replace("<span>", "").replace("</span>", "");
-          console.log(line)
+          // console.log(line)
           if (line.startsWith("::")) {
             question = line.split("::")[2].split("[html]<p>")[1].split("</p>")[0].replace(/\\/g, "");
 
