@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import dotenv from 'dotenv';
 import Image from 'next/image';
 dotenv.config();
-const BASEURL = process.argv[2];
+const BASEURL = "http://91.201.115.109";
 
 function File({renderState, NameGift, fileName, fileURL, handleDownload, handleDelete}){
 
