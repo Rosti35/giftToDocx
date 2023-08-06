@@ -62,7 +62,7 @@ jobs:
 
     - name: Deploy Frontend
       run: |
-          ssh -o StrictHostKeyChecking=no admin@89.108.70.183 <<EOF
+        ssh -o StrictHostKeyChecking=no admin@89.108.70.183 <<EOF
           cd giftToDocx/client
           git pull
           npm install --production
