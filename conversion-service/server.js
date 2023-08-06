@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors({origin: 'http://89.108.70.183'}));
+app.use(cors({origin: 'https://kaizenteam.ru'}));
 
 // Route for file download
 app.use('/download', downloadRouter);
