@@ -48,6 +48,7 @@ jobs:
         mkdir -p ~/.ssh/
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
+        ssh-keygen -f "~/.ssh/known_hosts" -R "89.108.70.183"
         echo "89.108.70.183 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF1WJZaP4kgp7Xwk0v2N6qM6Oza2cs/AjgZcHNkImfyX" >> ~/.ssh/known_hosts
 
     - name: Deploy Backend
@@ -61,7 +62,7 @@ jobs:
 
     - name: Deploy Frontend
       run: |
-        ssh admin@89.108.70.183 <<EOF
+          ssh -o StrictHostKeyChecking=no admin@89.108.70.183 <<EOF
           cd giftToDocx/client
           git pull
           npm install --production
