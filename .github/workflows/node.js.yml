@@ -71,7 +71,7 @@ jobs:
           git pull
           npm install --production
           npm run build
-          pm2 reload next
+          pm2 reload frontend
         EOF
 
 
