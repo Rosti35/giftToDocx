@@ -57,7 +57,7 @@ jobs:
 
     - name: Deploy Backend
       run: |
-        ssh admin@89.108.70.183 <<EOF
+        ssh -o StrictHostKeyChecking=no admin@89.108.70.183 <<EOF
           cd giftToDocx/conversion-service/
           git pull
           npm install --production
@@ -71,7 +71,7 @@ jobs:
           git pull
           npm install --production
           npm run build
-          pm2 reload next
+          pm2 reload frontend
         EOF
 
 
