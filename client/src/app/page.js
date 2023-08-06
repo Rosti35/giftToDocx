@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import dotenv from 'dotenv';
 import Image from 'next/image';
 dotenv.config();
-const BASEURL = process.env.BASEURL;
+const BASEURL = process.argv[2];
 
 function File({renderState, NameGift, fileName, fileURL, handleDownload, handleDelete}){
 
@@ -120,7 +120,7 @@ export default function Home() {
       console.log("uploadInitiated")
       
       
-      const response = await axios.post('http://localhost:3000/upload', formData, {
+      const response = await axios.post(BASEURL+'/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -140,7 +140,7 @@ export default function Home() {
  
   
   const handleDownload = (fileURL, fileName) => {
-   axios.get('http://localhost:3000/download/'+fileURL, { responseType: 'blob' })
+   axios.get(BASEURL+'/download/'+fileURL, { responseType: 'blob' })
    .then((response)=>{
     const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
       saveAs(blob, fileName);
