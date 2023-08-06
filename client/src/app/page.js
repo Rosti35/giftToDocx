@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import dotenv from 'dotenv';
 import Image from 'next/image';
 dotenv.config();
-const BASEURL = 'http://89.108.70.183';
+const BASEURL = 'https://kaizenteam.ru';
 
 function File({renderState, NameGift, fileName, fileURL, handleDownload, handleDelete}){
 
