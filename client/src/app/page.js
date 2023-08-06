@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import dotenv from 'dotenv';
 import Image from 'next/image';
 dotenv.config();
-const BASEURL = 'http://localhost:3000';
+const BASEURL = 'http://89.108.70.183';
 
 function File({renderState, NameGift, fileName, fileURL, handleDownload, handleDelete}){
 
