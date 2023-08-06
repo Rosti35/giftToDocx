@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: CI & Deploy
 
 on:
   push:
@@ -10,8 +10,8 @@ on:
     branches: [ "main", "dev" ]
 
 jobs:
-  build:
 
+  build_and_test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -19,7 +19,6 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v3
@@ -29,14 +28,46 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: npm
         cache-dependency-path: '**/package-lock.json'
-
     - name: Install dependencies
       run: npm ci
-
-
     - name: Run tests
       run: npm test
 
-#     - name: Build
-#       run: npm run build
+  build_and_deploy:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    # This will make sure it only runs on the main branch
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh/
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+        echo "89.108.70.183 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF1WJZaP4kgp7Xwk0v2N6qM6Oza2cs/AjgZcHNkImfyX" >> ~/.ssh/known_hosts
+
+    - name: Deploy Backend
+      run: |
+        ssh admin@89.108.70.183 <<EOF
+          cd giftToDocx/conversion-service/
+          git pull
+          npm install --production
+          pm2 reload server.js
+        EOF
+
+    - name: Deploy Frontend
+      run: |
+        ssh admin@89.108.70.183 <<EOF
+          cd giftToDocx/client
+          git pull
+          npm install --production
+          npm run build
+          pm2 reload next
+        EOF
+
+
 
