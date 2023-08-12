@@ -29,19 +29,53 @@ function convertFile(file) {
       let table = [];
       let title = "";
       let ConvertError = [];
+      let options = [];
+      
 
       giftContent.forEach((line, index) => {
         try {
-          line = line.trim().replace("<span>", "").replace("</span>", "");
+          line = line.trim().replaceAll("<span>", "").replaceAll("</span>", "").replaceAll("/\n/", "").replace(/\\/g, "");
           // console.log(line)
           if (line.startsWith("::")) {
-            question = line.split("::")[2].split("[html]<p>")[1].split("</p>")[0].replace(/\\/g, "");
+
+                let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+                let cleanLi = line.replace(/<li\s[^>]*>/g, "<li>");
+
+                // Remove all tags except <li> and </li>
+                let noTags =  cleanLi.replace(/<(?!\/?li>)[^>]*>/g, "");
+
+                // If <li> and </li> tags exist, extract their content
+                const listItemMatches = noTags.match(/<li>(.*?)<\/li>/g);
+            
+                if (listItemMatches) {
+                    listItemMatches.forEach((item, index) => {
+                      let cleanItem = item.replace(/<li>|<\/li>/g, "");
+                      if (index < letters.length) { // Ensure we don't exceed the letter list length
+                          options.push({
+                            'opt': cleanItem,
+                            'num': letters[index],
+                          });
+                    }
+                });
+                }
+
+                // Extract question
+                let cleanP = line.replace(/<p\s[^>]*>/g, "<p>");
+                let noTagsP =  cleanP.replace(/<(?!\/?p>)[^>]*>/g, "");
+                const questionMatch = noTagsP.match(/<p>(.*?)<\/p>/g);
+                if (questionMatch) {
+                    question = questionMatch[0].replace(/<p>|<\/p>/g, "");
+                }
 
           } else if (line.startsWith("$CATEGORY:")) {
             title = line.replace("$CATEGORY: ", "").replace("$course$", "").replace("/top/", "");
 
           } else if (line.startsWith("<p>") || line.startsWith("=")) {
-            let answerText = line.replace("<p>", "").replace("</p>", "");
+            let answerText = line.replaceAll("<p>", "").replaceAll("</p>", "");
+            if (answerText.match("->")){
+                answerText = answerText.substring(1)
+            }
             let isBoldItalic = answerText.startsWith("=");
 
             answers.push({
@@ -55,11 +89,12 @@ function convertFile(file) {
             if (answers.length > 0) {
               // console.log(question)
               // console.log(answers)
-              table.push({ 'questionNumber': questionNumber, 'Question': question, 'Answers': answers });
+              table.push({ 'questionNumber': questionNumber, 'Question': question, 'Options': options, 'Answers': answers });
               questionNumber++;
               answersNum = 1;
               question = "";
               answers = [];
+              options = [];
             }
           }
         } catch (error) {
