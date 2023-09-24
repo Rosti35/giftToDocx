@@ -3,7 +3,7 @@
 
 ## Описание
 
-Проект `giftToDocx` состоит из двух частей: [backend-сервиса](./convertator-servise) и [frontend-клиента](./client). В этом руководстве описано, как развернуть Node.js backend и Next.js frontend на VPS.
+Проект `giftToDocx` состоит из двух частей: [backend-сервиса](./conversion-service) и [frontend-клиента](./client). В этом руководстве описано, как развернуть Node.js backend и Next.js frontend на VPS.
 
 ## Установка
 
